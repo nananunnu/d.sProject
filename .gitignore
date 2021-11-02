@@ -58,3 +58,12 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+.vsconfig
+Assets/Plugins.meta
+Assets/Plugins/Demigiant.meta
+Assets/Plugins/Demigiant/DOTween.meta
+Assets/Plugins/Demigiant/DOTween/Editor.meta
+d.sProject/.gitignore
+d.sProject/.vsconfig
+Packages/manifest.json
+Packages/packages-lock.json
