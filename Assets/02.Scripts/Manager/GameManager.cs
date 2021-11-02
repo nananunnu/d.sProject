@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,7 +12,6 @@ public class GameManager : MonoBehaviour
     private AudioSource audioSource;
 
     public GameObject player;
-    public Button strButton;
 
     //public Text characterMsg;
     public Text explainMsg;
@@ -39,9 +37,6 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    public void SceneTrans()
-    {
-        SceneManager.LoadScene("Stage01Scene");
-    }
+
 
 }
