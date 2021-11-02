@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     //타이핑 구현
     public static GameManager instance;
+    
 
     private AudioSource audioSource;
 
@@ -37,6 +39,9 @@ public class GameManager : MonoBehaviour
         });
     }
 
-
+    public void SceneTrans()
+    {
+        SceneManager.LoadScene("Stage01Scene");
+    }
 
 }
