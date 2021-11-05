@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Player
-{
-    Player1, Player2
-}
-
 public class playerMove : MonoBehaviour
 {
     Rigidbody2D rb;
     
     public Animator anim_L;
     public Animator anim_T;
-
-    public Player player;
 
     public float speed = 6;
 
@@ -62,7 +55,6 @@ public class playerMove : MonoBehaviour
         if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
         {
             isRun = true;
-            Debug.Log("isRun은 true입니다");
         }
         else
         {
@@ -76,11 +68,11 @@ public class playerMove : MonoBehaviour
 
     void Devive()
     {
-        if(player == Player.Player1)
+        if(gameObject.CompareTag("PLAYER1"))
         {
             P1Move();
         }
-        if(player == Player.Player2)
+        if(gameObject.CompareTag("PLAYER2"))
         {
             P2Move();
         }
@@ -91,4 +83,5 @@ public class playerMove : MonoBehaviour
         anim_L.SetBool("L_Run", isRun);
         anim_T.SetBool("T_Run", isRun);
     }
+    
 }
