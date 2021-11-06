@@ -6,6 +6,10 @@ TagManager:
   tags:
   - PLAYER2
   - PLAYER1
+  - Enemy
+  - Tower
+  - Tile
+  - GROUND
   layers:
   - Default
   - TransparentFX

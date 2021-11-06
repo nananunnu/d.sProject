@@ -6,9 +6,8 @@ public class CharacterMove : MonoBehaviour
 {
     Rigidbody2D rb;
 
-    //public Animator anim_L;
-    //public Animator anim_T;
-
+    public Animator anim;
+    
     public float speed = 6;
 
     bool isRun = false;
@@ -78,9 +77,9 @@ public class CharacterMove : MonoBehaviour
         }
     }
 
-    //void Anim()
-    //{
-    //    anim_L.SetBool("L_Run", isRun);
-    //    anim_T.SetBool("T_Run", isRun);
-    //}
+    void Anim()
+    {
+        anim.SetBool("L_Run", isRun);
+    }
+
 }

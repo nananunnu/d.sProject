@@ -20,7 +20,7 @@ public class DataManager : MonoBehaviour
     public bool isPlayer1 = false;
     public bool isPlayer2 = false;
 
-
+    
     public void Awake()
     {
         if(instance == null)
