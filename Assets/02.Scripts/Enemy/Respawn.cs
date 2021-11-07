@@ -24,22 +24,22 @@ public class Respawn : MonoBehaviour
         if(DataManager.instance.p1Character == Character.Scientist)
         {
             GameObject g = Instantiate(player_Sc, player1_Re);
-            Set(g, "Player1", "PLAYER1");
+            Set(g, "Scientist", "PLAYER1");
         }
         if (DataManager.instance.p1Character == Character.SwordMaster)
         {
             GameObject g = Instantiate(player_Sw, player1_Re);
-            Set(g, "Player1", "PLAYER1");
+            Set(g, "SwordMaster", "PLAYER1");
         }
         if(DataManager.instance.p2Character == Character.Scientist)
         {
             GameObject g = Instantiate(player_Sc, player2_Re);
-            Set(g, "Player2", "PLAYER2");
+            Set(g, "Scientist", "PLAYER2");
         }
         if (DataManager.instance.p2Character == Character.SwordMaster)
         {
             GameObject g =Instantiate(player_Sw, player2_Re);
-            Set(g, "Player2", "PLAYER2");
+            Set(g, "SwordMaster", "PLAYER2");
         }
     }
 
@@ -47,7 +47,15 @@ public class Respawn : MonoBehaviour
     {
         g.name = name;
         g.tag = tag;
+
+        if(name == "SwordMaster" && tag == "PLAYER1")
+        {
+            g.transform.GetChild(0).tag = "PLAYER1";
+        }
+        else if(name == "SwordMaster" && tag == "PLAYER2")
+        {
+            g.transform.GetChild(0).tag = "PLAYER2";
+        }
     }
 
-    //sc´Â p1ÀÓ.
 }

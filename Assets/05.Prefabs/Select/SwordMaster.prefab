@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2315486931466537785}
   - component: {fileID: 5535609949470850768}
   - component: {fileID: 6268547026424195481}
-  - component: {fileID: 8853050102144898505}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -78,19 +77,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8853050102144898505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633509679627522125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa2a8b35b37e25f47bb99829652f2e71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
 --- !u!1 &5387253764394782271
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,6 +91,7 @@ GameObject:
   - component: {fileID: 5922210955707722400}
   - component: {fileID: -1280274713803804949}
   - component: {fileID: 4591452012566407674}
+  - component: {fileID: 8426015466089048694}
   m_Layer: 0
   m_Name: SwordMaster
   m_TagString: Untagged
@@ -236,7 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96aa8f331c669d4caa3ae5b92e2e17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
   speed: 6
 --- !u!50 &4591452012566407674
 Rigidbody2D:
@@ -259,3 +245,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8426015466089048694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5387253764394782271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3c81a1b43926542a329df6ceebe3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  isAttack: 0

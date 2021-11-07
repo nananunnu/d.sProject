@@ -5,22 +5,27 @@ using UnityEngine;
 public class CharacterMove : MonoBehaviour
 {
     Rigidbody2D rb;
-
-    public Animator anim;
+    Animator anim;
+    PlayerAttack pa;
+    SpriteRenderer sr;
     
     public float speed = 6;
 
     bool isRun = false;
+    bool isAttack = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         Devive();
-        //Anim();
+        Attack();
+        Anim();
     }
 
     void P1Move()
@@ -75,11 +80,41 @@ public class CharacterMove : MonoBehaviour
         {
             P2Move();
         }
+    
+        Flip();
+    }
+
+    void Attack()
+    {
+        if (pa == null)
+        {
+            pa = GameObject.Find("SwordMaster").transform.GetChild(0).GetComponent<PlayerAttack>();
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     void Anim()
     {
-        anim.SetBool("L_Run", isRun);
+        //anim.SetBool("Run", isRun);
+        anim.SetBool("isAttack", isAttack);
+
     }
 
+    public bool Flip()
+    {
+        if (!sr.flipX && rb.velocity.x < 0 || sr.flipX && rb.velocity.x > 0)
+        {
+            sr.flipX = !sr.flipX;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        //return false;
+    }
 }

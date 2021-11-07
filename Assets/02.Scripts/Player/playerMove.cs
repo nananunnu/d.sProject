@@ -5,6 +5,8 @@ using UnityEngine;
 public class playerMove : MonoBehaviour
 {
     Rigidbody2D rb;
+    public SpriteRenderer sr_T;
+    public SpriteRenderer sr_L;
     
     public Animator anim_L;
     public Animator anim_T;
@@ -76,6 +78,11 @@ public class playerMove : MonoBehaviour
         {
             P2Move();
         }
+
+        if (!sr_T.flipX && rb.velocity.x < 0 || sr_T.flipX && rb.velocity.x > 0)
+        {
+            Flip();
+        }
     }
 
     void Anim()
@@ -83,5 +90,12 @@ public class playerMove : MonoBehaviour
         anim_L.SetBool("L_Run", isRun);
         anim_T.SetBool("T_Run", isRun);
     }
-    
+
+    public bool Flip()
+    {           
+        sr_T.flipX = !sr_T.flipX;
+        sr_L.flipX = !sr_L.flipX;
+        return true;
+    }
+
 }
