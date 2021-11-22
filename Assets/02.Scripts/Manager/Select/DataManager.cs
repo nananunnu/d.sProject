@@ -17,10 +17,7 @@ public class DataManager : MonoBehaviour
     public bool isSelectP1 = false;
     public bool isSelectP2 = false;
 
-    public bool isPlayer1 = false;
-    public bool isPlayer2 = false;
-
-    public bool isAttack = false;
+    public bool isStart = false;
 
     public void Awake()
     {

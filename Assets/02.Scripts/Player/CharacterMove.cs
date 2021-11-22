@@ -11,9 +11,6 @@ public class CharacterMove : MonoBehaviour
     
     public float speed = 6;
 
-    bool isRun = false;
-    bool isAttack = false;
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,8 +21,6 @@ public class CharacterMove : MonoBehaviour
     void Update()
     {
         Devive();
-        Attack();
-        Anim();
     }
 
     void P1Move()
@@ -33,14 +28,14 @@ public class CharacterMove : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         float moveX = Input.GetAxisRaw("Horizontal");
 
-        if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
-        {
-            isRun = true;
-        }
-        else
-        {
-            isRun = false;
-        }
+        //if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
+        //{
+        //    isRun = true;
+        //}
+        //else
+        //{
+        //    isRun = false;
+        //}
 
         Vector2 getVel = new Vector2(moveX, moveY) * speed;
         rb.velocity = getVel;
@@ -56,14 +51,14 @@ public class CharacterMove : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow)) moveY = 1;
         if (Input.GetKey(KeyCode.DownArrow)) moveY = -1;
 
-        if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
-        {
-            isRun = true;
-        }
-        else
-        {
-            isRun = false;
-        }
+        //if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
+        //{
+        //    isRun = true;
+        //}
+        //else
+        //{
+        //    isRun = false;
+        //}
 
         Vector2 getVel = new Vector2(moveX, moveY) * speed;
         rb.velocity = getVel;
@@ -84,26 +79,6 @@ public class CharacterMove : MonoBehaviour
         Flip();
     }
 
-    void Attack()
-    {
-        if (pa == null)
-        {
-            pa = GameObject.Find("SwordMaster").transform.GetChild(0).GetComponent<PlayerAttack>();
-        }
-        else
-        {
-            return;
-        }
-
-    }
-
-    void Anim()
-    {
-        //anim.SetBool("Run", isRun);
-        anim.SetBool("isAttack", isAttack);
-
-    }
-
     public bool Flip()
     {
         if (!sr.flipX && rb.velocity.x < 0 || sr.flipX && rb.velocity.x > 0)
@@ -115,6 +90,13 @@ public class CharacterMove : MonoBehaviour
         {
             return false;
         }
-        //return false;
     }
+
+    //private void OnCollisionEnter2D(Collision2D col)
+    //{
+    //    if(col.gameObject.CompareTag("Enemy"))
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

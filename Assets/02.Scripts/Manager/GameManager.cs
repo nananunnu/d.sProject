@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject warnPanel;
     public Button startBtn;
 
-    bool isDeselected = false;
+    public int Scene = 0;
 
     void Awake()
     {
@@ -42,17 +42,27 @@ public class GameManager : MonoBehaviour
 
     public void SceneTrans()
     {
-        if(DataManager.instance.isSelectP1 && DataManager.instance.isSelectP2)
-        {
-            SceneManager.LoadScene("Stage01Scene");
-        }
-        else
-        {
-            warnPanel.SetActive(true);
-            warnMsg.text = "플레이어 모두가 캐릭터를 선택하지 않았습니다";
 
-            StartCoroutine(Panel());
+        if (DataManager.instance.isSelectP1 && DataManager.instance.isSelectP2)        
+        {       
+            SceneManager.LoadScene("Stage01Scene");            
+            //++Scene;            
         }
+        
+        else        
+        {        
+            warnPanel.SetActive(true);            
+            warnMsg.text = "플레이어 모두가 캐릭터를 선택하지 않았습니다";            
+            StartCoroutine(Panel());            
+        }
+    }
+
+    public void StartScene()
+    {
+
+            SceneManager.LoadScene("SelectScene");
+            DataManager.instance.isStart = true;
+     //       ++Scene;
     }
 
     //코루틴으로 3초 뒤에 

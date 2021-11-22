@@ -4,112 +4,110 @@ using UnityEngine;
 
 public class Attack_Sci : MonoBehaviour
 {
-    //scientist 공격을 처음 1번 실행한 뒤에는 실행이 안됨.
-    //scientist가 왼쪽을 볼 때에도 무기는 오른쪽을 향해잇음(collider offset 문제)
-    //각 직업별 애니메이션 실행X
-
-
-    public bool isAttack = false;
     public float damage = 1;
+    public float currentTime = 1;
+    public float coolTime = 1f;
 
     Animator anim;
-    GameObject gun;
     BoxCollider2D coli;
-    CharacterMove cm;
+    SpriteRenderer sr;
+
+    public Transform pos;
+    public Vector2 boxSize;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        gun = transform.GetChild(0).gameObject;
-        coli = gun.GetComponent<BoxCollider2D>();
-        cm = GetComponent<CharacterMove>();
+        coli = transform.GetChild(0).GetComponent<BoxCollider2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         Attack();
-        //Anim();
         SetColli();
     }
 
     void Attack()
     {
-        if (gameObject.CompareTag("PLAYER1"))
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+        if(currentTime <= 0)
+        {  
+            if (gameObject.CompareTag("PLAYER1"))
             {
-                //isAttack = true;
-                anim.SetTrigger("Attack");
-                Debug.Log("Sc공격이 실행됩니다");
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    currentTime = coolTime;
 
-                StartCoroutine(Gun());
-                gun.gameObject.SetActive(false);
+                    anim.SetTrigger("Attack");
+
+                    Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+                    foreach (Collider2D collider in collider2Ds)
+                    {
+                        if (collider.tag == "Enemy")
+                        {
+                            collider.GetComponent<EnemyHP>().TakeDamage(1);
+                        }
+                    }
+                }
             }
-            else
+            else if (gameObject.CompareTag("PLAYER2"))
             {
-                //isAttack = false;
+                if (Input.GetKeyDown(KeyCode.RightShift))
+                {
+
+                    Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+                    foreach (Collider2D collider in collider2Ds)
+                    {
+                        if (collider.tag == "Enemy")
+                        {
+                            collider.GetComponent<EnemyHP>().TakeDamage(1);
+                        }
+                    }
+
+                    anim.SetTrigger("Attack");
+                }
             }
         }
-        else if(gameObject.CompareTag("PLAYER2"))
+        else
         {
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                //isAttack = true;
-                anim.SetTrigger("Attack");
-                StartCoroutine(Gun());
-                StopAllCoroutines();
-                gun.gameObject.SetActive(false);
-            }
-            else
-            {
-                //isAttack = false;
-            }
+            currentTime -= Time.deltaTime;
         }
     }
 
-    IEnumerator Gun()
-    {
-        gun.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1);
-    }
-
-    void Anim()
-    {
-        //anim.SetBool("isAttack", isAttack);
-    }
 
     void SetColli()
     {
-        if(cm.Flip())
+
+        if (sr.flipX) //왼쪽
         {
-            Debug.Log("Scientist는 왼쪽을 보고있습니다");
             coli.offset = new Vector2(-0.26f, -0.008f);
             coli.size = new Vector2(0.28f, 0.17f);
+
+            //pos.position = new Vector3(-0.3f, 0, 0);
         }
-        if(!cm.Flip())
+        else if (!sr.flipX) //오른쪽
         {
-            Debug.Log("Scientist는 오른쪽을 보고있습니다");
             coli.offset = new Vector2(0.3f, -0.008f);
             coli.size = new Vector2(0.28f, 0.17f);
 
+            //pos.position = new Vector3(0.2f, -0.03f, 0);
         }
-        
+
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(pos.position, boxSize);
+    }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        //if (col.gameObject.CompareTag("Enemy"))
+        //if(col.gameObject.CompareTag("Enemy"))
         //{
-        //    isAttack = false;
         //    col.gameObject.GetComponent<EnemyHP>().TakeDamage(damage);
+        //    OnDamaged(col.gameObject.transform.position);
         //}
-
-        //if (col.gameObject.CompareTag("GROUND") || col.gameObject.CompareTag("Tile"))
-        //{
-        //    Debug.Log("Tile or Ground와 부딪혔습니다");
-        //    isAttack = false;
-        //}
-
+        
     }
 }

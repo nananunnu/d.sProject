@@ -5,93 +5,117 @@ using UnityEngine;
 public class SwordMasterAttack : MonoBehaviour
 {
     public float damage = 1;
-    //public bool isAttack = false;
-
+    //public float speed = 40;
+    
+    public float currentTime = 1;
+    public float coolTime = 0.3f;
+    
     Animator anim;
     BoxCollider2D coli;
-    CharacterMove cm;
+    SpriteRenderer sr;
+    
+    public Transform pos;
+    public Vector2 boxSize;
+
 
     void Start()
     {
         anim = GetComponent<Animator>();
         coli = transform.GetChild(0).GetComponent<BoxCollider2D>();
-        cm = GetComponent<CharacterMove>();
+        sr = GetComponent<SpriteRenderer>();
 
     }
 
     void Update()
     {
         Attack();
-        //Anim();
         SetColli();
     }
 
     void Attack()
     {
-        if (gameObject.CompareTag("PLAYER1"))
+        if(currentTime <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (gameObject.CompareTag("PLAYER1"))
             {
-                anim.SetTrigger("Attack");
-                Debug.Log("Sw공격이 실행됩니다");
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    currentTime = coolTime;
+
+                    Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+                    foreach (Collider2D collider in collider2Ds)
+                    {
+                        Debug.Log(collider.tag);
+
+                        if (collider.tag == "Enemy")
+                        {
+                            collider.GetComponent<EnemyHP>().TakeDamage(1);
+                        }
+                    }
+
+                    anim.SetTrigger("Attack");
+                }
             }
-            else
+            else if (gameObject.CompareTag("PLAYER2"))
             {
-                //isAttack = false;
+                if (Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+                    foreach (Collider2D collider in collider2Ds)
+                    {
+                        Debug.Log(collider.tag);
+
+                        if (collider.tag == "Enemy")
+                        {
+                            collider.GetComponent<EnemyHP>().TakeDamage(1);
+                        }
+                    }
+                    anim.SetTrigger("Attack");
+                }
             }
         }
+
         else
         {
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                anim.SetTrigger("Attack");
-                //isAttack = true;
-                //Debug.Log(isAttack);
-            }
-            else
-            {
-                //isAttack = false;
-            }
+            currentTime -= Time.deltaTime;
         }
-    }
 
-    void Anim()
-    {
-        //anim.SetBool("isAttack", isAttack);
+        
     }
 
     void SetColli()
     {
-
-        if (cm.Flip())
+        if (sr.flipX) //왼쪽
         {
-            Debug.Log("swordMaster는 왼쪽을 보고있습니다");
-
             coli.offset = new Vector2(-0.13f, -0.07f);
             coli.size = new Vector2(0.2f, 0.33f);
+
+            //pos.position = new Vector3(-0.3f, 0);
         }
-        if(!cm.Flip())
+        else if (!sr.flipX) //오른쪽
         {
-            Debug.Log("swordMaster는 오른쪽을 보고있습니다");
             coli.offset = new Vector2(0.12f, -0.07f);
             coli.size = new Vector2(0.2f, 0.33f);
-        }
 
+            //pos.position = new Vector3(0.2f, -0.02f, 0);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(pos.position, boxSize);
     }
 
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            //isAttack = false;
-            col.gameObject.GetComponent<EnemyHP>().TakeDamage(damage);
-        }
-
-        if (col.gameObject.CompareTag("GROUND") || col.gameObject.CompareTag("Tile"))
-        {
-            Debug.Log("Tile or Ground와 부딪혔습니다");
-            //isAttack = false;
-        }
+        //if (col.gameObject.CompareTag("Enemy"))
+        //{
+        //    col.gameObject.GetComponent<EnemyHP>().TakeDamage(damage);
+        //    OnDamaged(col.gameObject.transform.position);
+        //}
     }
 }
