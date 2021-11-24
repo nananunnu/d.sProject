@@ -4,112 +4,93 @@ using UnityEngine;
 
 public class Attack_Sci : MonoBehaviour
 {
-    //scientist 공격을 처음 1번 실행한 뒤에는 실행이 안됨.
-    //scientist가 왼쪽을 볼 때에도 무기는 오른쪽을 향해잇음(collider offset 문제)
-    //각 직업별 애니메이션 실행X
-
-
-    public bool isAttack = false;
     public float damage = 1;
 
     Animator anim;
     GameObject gun;
-    BoxCollider2D coli;
     CharacterMove cm;
+
+    [Header("충돌관련")]
+    public Transform pos;
+    public Vector2 boxSize;
+
+    [Header("쿨타임")]
+    public float curTime;
+    public float coolTime;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         gun = transform.GetChild(0).gameObject;
-        coli = gun.GetComponent<BoxCollider2D>();
         cm = GetComponent<CharacterMove>();
+
+        curTime = 0f;
+        coolTime = 0.5f;
     }
 
     void Update()
     {
         Attack();
-        //Anim();
         SetColli();
     }
 
     void Attack()
     {
-        if (gameObject.CompareTag("PLAYER1"))
+        if(curTime <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (gameObject.tag == "PLAYER1")
             {
-                //isAttack = true;
-                anim.SetTrigger("Attack");
-                Debug.Log("Sc공격이 실행됩니다");
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어1의 공격 (sc)");
+                }
+            }
+            else if (gameObject.tag == "PLAYER2")
+            {
+                if (Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어1의 공격 (sc)");
+                }
+            }
 
-                StartCoroutine(Gun());
-                gun.gameObject.SetActive(false);
-            }
-            else
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+            foreach(var col in collider2Ds)
             {
-                //isAttack = false;
+                if(col.tag == "Enemy")
+                {
+                    col.GetComponent<EnemyHP>().TakeDamage(damage);
+                }
             }
+
+            curTime = coolTime;
         }
-        else if(gameObject.CompareTag("PLAYER2"))
+        else
         {
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                //isAttack = true;
-                anim.SetTrigger("Attack");
-                StartCoroutine(Gun());
-                StopAllCoroutines();
-                gun.gameObject.SetActive(false);
-            }
-            else
-            {
-                //isAttack = false;
-            }
+            curTime -= Time.deltaTime;
         }
-    }
-
-    IEnumerator Gun()
-    {
-        gun.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1);
-    }
-
-    void Anim()
-    {
-        //anim.SetBool("isAttack", isAttack);
     }
 
     void SetColli()
     {
-        if(cm.Flip())
+        if(cm.Flip()) //왼
         {
             Debug.Log("Scientist는 왼쪽을 보고있습니다");
-            coli.offset = new Vector2(-0.26f, -0.008f);
-            coli.size = new Vector2(0.28f, 0.17f);
+            pos.localPosition = new Vector3(-0.15f, 0, 0);
         }
-        if(!cm.Flip())
+        else if(!cm.Flip()) //오른
         {
             Debug.Log("Scientist는 오른쪽을 보고있습니다");
-            coli.offset = new Vector2(0.3f, -0.008f);
-            coli.size = new Vector2(0.28f, 0.17f);
-
+            pos.localPosition = new Vector3(0.15f, 0, 0);
         }
         
     }
 
-
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnDrawGizmos()
     {
-        //if (col.gameObject.CompareTag("Enemy"))
-        //{
-        //    isAttack = false;
-        //    col.gameObject.GetComponent<EnemyHP>().TakeDamage(damage);
-        //}
-
-        //if (col.gameObject.CompareTag("GROUND") || col.gameObject.CompareTag("Tile"))
-        //{
-        //    Debug.Log("Tile or Ground와 부딪혔습니다");
-        //    isAttack = false;
-        //}
-
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(pos.position, boxSize);
     }
 }

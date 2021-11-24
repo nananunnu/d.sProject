@@ -5,93 +5,98 @@ using UnityEngine;
 public class SwordMasterAttack : MonoBehaviour
 {
     public float damage = 1;
-    //public bool isAttack = false;
 
     Animator anim;
-    BoxCollider2D coli;
     CharacterMove cm;
+
+    [Header("쿨타임")]
+    public float curTime;
+    public float coolTime;
+
+    [Header("충돌검사")]
+    public Transform pos;
+    public Vector2 boxSize;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        coli = transform.GetChild(0).GetComponent<BoxCollider2D>();
         cm = GetComponent<CharacterMove>();
+
+        curTime = 0f;
+        coolTime = 0.5f;
 
     }
 
     void Update()
     {
         Attack();
-        //Anim();
         SetColli();
     }
 
     void Attack()
     {
-        if (gameObject.CompareTag("PLAYER1"))
+
+       if(curTime <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+
+            if (gameObject.tag == "PLAYER1")
             {
-                anim.SetTrigger("Attack");
-                Debug.Log("Sw공격이 실행됩니다");
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어1의 공격 (sw)");
+                }
             }
-            else
+            else if (gameObject.tag == "PLAYER2")
             {
-                //isAttack = false;
+                if (Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어2의 공격 (sw)");
+                }
             }
+
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0); //박스 만들기
+
+            foreach (var col in collider2Ds)
+            {
+                if (col.tag == "Enemy")
+                {
+                    col.GetComponent<EnemyHP>().TakeDamage(damage);
+                }
+            }
+
+            curTime = coolTime;
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                anim.SetTrigger("Attack");
-                //isAttack = true;
-                //Debug.Log(isAttack);
-            }
-            else
-            {
-                //isAttack = false;
-            }
+            curTime -= Time.deltaTime;
         }
     }
 
-    void Anim()
+
+    private void OnDrawGizmos()
     {
-        //anim.SetBool("isAttack", isAttack);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(pos.position, boxSize);
     }
 
     void SetColli()
     {
 
-        if (cm.Flip())
+        //현재 flip 상태가 안먹힘...
+
+        if (cm.Flip()) //왼
         {
             Debug.Log("swordMaster는 왼쪽을 보고있습니다");
-
-            coli.offset = new Vector2(-0.13f, -0.07f);
-            coli.size = new Vector2(0.2f, 0.33f);
+            pos.localPosition = new Vector3(-0.1f, 0, 0); 
+            //인스펙터에서 보이는 자식오브젝트의 position은 부모오브젝트를 기준으로함.. 그래서 localPosition써야됨.
         }
-        if(!cm.Flip())
+        if(!cm.Flip()) //오른
         {
             Debug.Log("swordMaster는 오른쪽을 보고있습니다");
-            coli.offset = new Vector2(0.12f, -0.07f);
-            coli.size = new Vector2(0.2f, 0.33f);
+            pos.localPosition = new Vector3(0.1f, 0, 0);
         }
 
-    }
-
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Enemy"))
-        {
-            //isAttack = false;
-            col.gameObject.GetComponent<EnemyHP>().TakeDamage(damage);
-        }
-
-        if (col.gameObject.CompareTag("GROUND") || col.gameObject.CompareTag("Tile"))
-        {
-            Debug.Log("Tile or Ground와 부딪혔습니다");
-            //isAttack = false;
-        }
     }
 }
