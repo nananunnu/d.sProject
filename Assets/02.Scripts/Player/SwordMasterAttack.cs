@@ -5,6 +5,7 @@ using UnityEngine;
 public class SwordMasterAttack : MonoBehaviour
 {
     public float damage = 1;
+<<<<<<< HEAD
     //public float speed = 40;
     
     public float currentTime = 1;
@@ -17,12 +18,32 @@ public class SwordMasterAttack : MonoBehaviour
     public Transform pos;
     public Vector2 boxSize;
 
+=======
+
+    Animator anim;
+    CharacterMove cm;
+>>>>>>> main
+
+    [Header("쿨타임")]
+    public float curTime;
+    public float coolTime;
+
+    [Header("충돌검사")]
+    public Transform pos;
+    public Vector2 boxSize;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+<<<<<<< HEAD
         coli = transform.GetChild(0).GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
+=======
+        cm = GetComponent<CharacterMove>();
+>>>>>>> main
+
+        curTime = 0f;
+        coolTime = 0.5f;
 
     }
 
@@ -34,6 +55,7 @@ public class SwordMasterAttack : MonoBehaviour
 
     void Attack()
     {
+<<<<<<< HEAD
         if(currentTime <= 0)
         {
             if (gameObject.CompareTag("PLAYER1"))
@@ -73,20 +95,65 @@ public class SwordMasterAttack : MonoBehaviour
                         }
                     }
                     anim.SetTrigger("Attack");
+=======
+
+       if(curTime <= 0)
+        {
+
+            if (gameObject.tag == "PLAYER1")
+            {
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어1의 공격 (sw)");
                 }
             }
+            else if (gameObject.tag == "PLAYER2")
+            {
+                if (Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    anim.SetTrigger("Attack");
+                    Debug.Log("플레이어2의 공격 (sw)");
+>>>>>>> main
+                }
+            }
+
+            Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0); //박스 만들기
+
+            foreach (var col in collider2Ds)
+            {
+                if (col.tag == "Enemy")
+                {
+                    col.GetComponent<EnemyHP>().TakeDamage(damage);
+                }
+            }
+
+            curTime = coolTime;
         }
 
         else
         {
+<<<<<<< HEAD
             currentTime -= Time.deltaTime;
+=======
+            curTime -= Time.deltaTime;
+>>>>>>> main
         }
 
+<<<<<<< HEAD
         
+=======
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(pos.position, boxSize);
+>>>>>>> main
     }
 
     void SetColli()
     {
+<<<<<<< HEAD
         if (sr.flipX) //왼쪽
         {
             coli.offset = new Vector2(-0.13f, -0.07f);
@@ -100,6 +167,21 @@ public class SwordMasterAttack : MonoBehaviour
             coli.size = new Vector2(0.2f, 0.33f);
 
             //pos.position = new Vector3(0.2f, -0.02f, 0);
+=======
+
+        //현재 flip 상태가 안먹힘...
+
+        if (cm.Flip()) //왼
+        {
+            Debug.Log("swordMaster는 왼쪽을 보고있습니다");
+            pos.localPosition = new Vector3(-0.1f, 0, 0); 
+            //인스펙터에서 보이는 자식오브젝트의 position은 부모오브젝트를 기준으로함.. 그래서 localPosition써야됨.
+        }
+        if(!cm.Flip()) //오른
+        {
+            Debug.Log("swordMaster는 오른쪽을 보고있습니다");
+            pos.localPosition = new Vector3(0.1f, 0, 0);
+>>>>>>> main
         }
     }
 
@@ -108,6 +190,7 @@ public class SwordMasterAttack : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(pos.position, boxSize);
     }
+<<<<<<< HEAD
 
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -118,4 +201,6 @@ public class SwordMasterAttack : MonoBehaviour
         //    OnDamaged(col.gameObject.transform.position);
         //}
     }
+=======
+>>>>>>> main
 }

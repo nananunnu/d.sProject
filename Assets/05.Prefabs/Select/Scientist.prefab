@@ -64,7 +64,11 @@ Transform:
   m_LocalScale: {x: 4.5, y: 4.5, z: 1}
   m_Children:
   - {fileID: 498307299388656601}
+<<<<<<< HEAD
   - {fileID: 1241617515255308193}
+=======
+  - {fileID: 451168093186197252}
+>>>>>>> main
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -212,11 +216,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+<<<<<<< HEAD
   speed: 40
   currentTime: 0
   coolTime: 0.3
   pos: {fileID: 1241617515255308193}
   boxSize: {x: 1.5, y: 1}
+=======
+  pos: {fileID: 451168093186197252}
+  boxSize: {x: 1.5, y: 1}
+  curTime: 0
+  coolTime: 0
+>>>>>>> main
 --- !u!1 &7287401326528739593
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,3 +285,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.30983323, y: 0.20760578}
   m_EdgeRadius: 0
+--- !u!1 &8563654657616995838
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 451168093186197252}
+  m_Layer: 0
+  m_Name: Pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &451168093186197252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563654657616995838}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.15, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4833583465937905017}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

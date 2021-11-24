@@ -5,16 +5,18 @@ using UnityEngine;
 public class CharacterMove : MonoBehaviour
 {
     Rigidbody2D rb;
-    Animator anim;
-    PlayerAttack pa;
     SpriteRenderer sr;
     
     public float speed = 6;
 
+<<<<<<< HEAD
+=======
+    bool isRun = false;
+    
+>>>>>>> main
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -79,16 +81,20 @@ public class CharacterMove : MonoBehaviour
         Flip();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     public bool Flip()
     {
         if (!sr.flipX && rb.velocity.x < 0 || sr.flipX && rb.velocity.x > 0)
         {
             sr.flipX = !sr.flipX;
-            return true;
+            return true; //¿ÞÂÊ 
         }
         else
         {
-            return false;
+            return false; //¿À¸¥ÂÊ
         }
     }
 
